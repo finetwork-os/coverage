@@ -129,15 +129,15 @@ export class Coverage {
     this.addressHistory = addresses
   }
 
-  async getNormalizedAddressByInput(
+  async getNormalizedAddressesByInput(
     queryKey: string = 'address',
     address: string
-  ): Promise<Address> {
+  ): Promise<Address[]> {
     if (isServer()) {
       throw new Error('Server side not allowed. Use SDK in client environment.')
     }
     try {
-      const addressNormalized: Address = await (
+      const addressNormalized: Address[] = await (
         await fetch(`${this._urls.normalizer}?${queryKey}=${address}`, {
           method: 'GET',
         })

@@ -12,7 +12,7 @@ Import coverage previously initialized, and get coverage for your address
 import { coverage } from './lib'
 
 const inputString = 'calle piruleta'
-const address = await coverage.getNormalizedAddressByInput(inputString)
+const addresses = await coverage.getNormalizedAddressesByInput(inputString)
 ```
 
 ## Get locations by address
