@@ -74,11 +74,11 @@ export class Coverage {
     let installationAddress
     let addressHistory
     if (storage && storage instanceof Storage) {
+      this._storage = storage
       installationAddress = storage.getItem(
         this.COVERAGE_INSTALLATION_ADDRESS_KEY
       )
       addressHistory = storage.getItem(this.COVERAGE_ADDRESS_HISTORY_KEY)
-      this._storage = storage
     }
     this._urls = urls
     this._addressHistory = addressHistory ?? []

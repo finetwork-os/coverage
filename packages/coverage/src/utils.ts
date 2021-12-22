@@ -42,7 +42,7 @@ export const getCoverageProxy = (
             break
           case 'addressHistory':
             valueToStore = JSON.stringify(value)
-            keyToStore = coverage.COVERAGE_INSTALLATION_ADDRESS_KEY
+            keyToStore = coverage.COVERAGE_ADDRESS_HISTORY_KEY
             Coverage.events.emit('addressHistoryChange', target._addressHistory)
             break
           default:
