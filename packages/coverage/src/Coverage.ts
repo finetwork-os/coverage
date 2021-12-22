@@ -78,7 +78,9 @@ export class Coverage {
         this.COVERAGE_INSTALLATION_ADDRESS_KEY
       )
       addressHistory = storage.getItem(this.COVERAGE_ADDRESS_HISTORY_KEY)
+      this._storage = storage
     }
+    this._urls = urls
     this._addressHistory = addressHistory ?? []
     this._installationAddress = installationAddress ?? null
 
