@@ -151,7 +151,7 @@ export class Coverage {
       throw new Error('Server side not allowed. Use SDK in client environment.')
     }
     try {
-      const locations: Address[] = await (
+      const locations: any[] = await (
         await fetch(`${this._urls.locator}`, {
           method: 'POST',
           body: JSON.stringify(address),
