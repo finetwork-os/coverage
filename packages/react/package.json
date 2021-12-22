@@ -27,6 +27,6 @@
   },
   "peerDependencies": {
     "react": "^17.0.2",
-    "@finetwork/coverage": "0.2.1"
+    "@finetwork/coverage": "0.2.2"
   }
 }
