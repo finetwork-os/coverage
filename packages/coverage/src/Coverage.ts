@@ -157,6 +157,9 @@ export class Coverage {
         await fetch(`${this._urls.locator}`, {
           method: 'POST',
           body: JSON.stringify(address),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         })
       ).json()
       return locations
