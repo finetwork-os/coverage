@@ -1537,6 +1537,15 @@
     resolve-pathname "^3.0.0"
     tslib "^2.2.0"
 
+"@finetwork/coverage-react@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@finetwork/coverage-react/-/coverage-react-0.2.0.tgz#7b59dcb87e7e981a59522d7e63857bb02e573abb"
+  integrity sha512-DzLWjTmR1X8Y7NsjGaiefQj6zPQsgk9v3cTh0F9gObc3VVkjuBjNsq/oTWrnBH3j2m2hy2HE5ObdcJ8bUdyPiQ==
+  dependencies:
+    "@finetwork/coverage" "0.2.0"
+    react "^17.0.2"
+    uuid "^8.3.2"
+
 "@gar/promisify@^1.0.1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.2.tgz#30aa825f11d438671d585bd44e7fd564535fc210"
@@ -3024,9 +3033,9 @@
     "@types/react" "*"
 
 "@types/react@*", "@types/react@^17.0.14", "@types/react@^17.0.30":
-  version "17.0.30"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.30.tgz#2f8e6f5ab6415c091cc5e571942ee9064b17609e"
-  integrity sha512-3Dt/A8gd3TCXi2aRe84y7cK1K8G+N9CZRDG8kDGguOKa0kf/ZkSwTmVIDPsm/KbQOVMaDJXwhBtuOXxqwdpWVg==
+  version "17.0.37"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.37.tgz#6884d0aa402605935c397ae689deed115caad959"
+  integrity sha512-2FS1oTqBGcH/s0E+CjrCCR9+JMpsu9b69RTFO+40ua43ZqP5MmQ4iUde/dMjWR909KxZwmOQIFq6AV6NjEG5xg==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
