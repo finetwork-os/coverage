@@ -108,8 +108,7 @@ export class Coverage {
   }
 
   addInstallationAddress(address: Address) {
-    this._installationAddress = address
-    this.addAddressToHistory(address)
+    this.installationAddress = address
   }
 
   updateInstallationAddress(address: Partial<Address>) {
