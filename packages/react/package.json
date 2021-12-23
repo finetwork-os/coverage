@@ -1,6 +1,6 @@
 {
   "name": "@finetwork/coverage-react",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "source": "src/index.ts",
   "typings": "src/index.ts",
   "main": "src/index.ts",
@@ -27,6 +27,6 @@
   },
   "peerDependencies": {
     "react": "^17.0.2",
-    "@finetwork/coverage": "0.2.7"
+    "@finetwork/coverage": "0.2.8"
   }
 }

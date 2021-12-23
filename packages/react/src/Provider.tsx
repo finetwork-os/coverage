@@ -23,6 +23,8 @@ export const Provider: FC<ProviderProps> = ({ children, coverage }) => {
       patchState('installationAddress')
     )
     Coverage.events.on('addressHistoryChange', patchState('addressHistory'))
+    patchState('installationAddress')(coverage.installationAddress)
+    patchState('addressHistory')(coverage.addressHistory)
     return () => {
       Coverage.events.off(
         'installationAddressChange',
