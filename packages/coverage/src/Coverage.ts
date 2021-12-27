@@ -169,22 +169,20 @@ export class Coverage {
     }
   }
 
-  async getOffersByParams(params: any[]): Promise<Offer[]> {
+  async getOffersByParams(params: Record<string, string>): Promise<Offer[]> {
     if (isServer()) {
       throw new Error('Server side not allowed. Use SDK in client environment.')
     }
     try {
       const paramsEntries = Object.entries(params)
+      const paramsString = paramsEntries.reduce((prev, next, index) => {
+        prev = `${prev}${index > 0 ? '&' : ''}${next[0]}=${next[1]}`
+        return prev
+      }, '')
       const offers: Offer[] = await (
-        await fetch(
-          `${this._urls.visibility}?
-      ${paramsEntries.map(
-        (param, index) => `${index >= 0 ? '&' : ''}${param[0]}=${param[1]}`
-      )}`,
-          {
-            method: 'GET',
-          }
-        )
+        await fetch(`${this._urls.visibility}?${paramsString}`, {
+          method: 'GET',
+        })
       ).json()
       return offers
     } catch (error) {
