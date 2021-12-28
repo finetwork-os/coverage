@@ -6,7 +6,8 @@ export interface Address {
   number: string
   street: string
   streetId: number
-  town: string;
+  town: string
   townId: string
   type: string
+  homeId?: string
 }
