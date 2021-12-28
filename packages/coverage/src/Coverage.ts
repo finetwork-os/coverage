@@ -130,6 +130,10 @@ export class Coverage {
     this.addressHistory = addresses
   }
 
+  removeInstallationAddress() {
+    this.installationAddress = null
+  }
+
   async getNormalizedAddressesByInput(
     queryKey: string = 'address',
     address: string

@@ -1,6 +1,6 @@
 {
   "name": "@finetwork/coverage",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "source": "src/index.ts",
   "typings": "src/index.ts",
   "main": "src/index.ts",
