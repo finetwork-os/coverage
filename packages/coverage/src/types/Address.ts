@@ -9,5 +9,5 @@ export interface Address {
   town: string
   townId: string
   type: string
-  homeId?: string
+  homeId?: `${string}-${string}`
 }
