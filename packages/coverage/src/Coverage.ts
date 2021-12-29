@@ -1,4 +1,4 @@
-import { Address, Offer } from './types'
+import { Address } from './types'
 import { getCoverageProxy, isServer } from './utils'
 import mitt, { MittEmitter } from './mitt'
 
@@ -111,6 +111,7 @@ export class Coverage {
 
   addInstallationAddress(address: Address) {
     this.installationAddress = address
+    this.addAddressToHistory(address)
   }
 
   updateInstallationAddress(address: Partial<Address>) {
@@ -173,7 +174,7 @@ export class Coverage {
     }
   }
 
-  async getOffersByParams(params: Record<string, string>): Promise<Offer[]> {
+  async getOffersByParams(params: Record<string, string>): Promise<unknown[]> {
     if (isServer()) {
       throw new Error('Server side not allowed. Use SDK in client environment.')
     }
@@ -183,7 +184,7 @@ export class Coverage {
         prev = `${prev}${index > 0 ? '&' : ''}${next[0]}=${next[1]}`
         return prev
       }, '')
-      const offers: Offer[] = await (
+      const offers: unknown[] = await (
         await fetch(`${this._urls.visibility}?${paramsString}`, {
           method: 'GET',
         })
