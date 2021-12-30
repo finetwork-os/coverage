@@ -74,7 +74,7 @@ describe('FlowCoverage', () => {
     expect(result.current.addressesState.isLoading).toBeTruthy()
     await waitFor(() => {
       expect(result.current.addressesState.isLoading).toBeFalsy()
-      expect(result.current.addressesState.isError).toBeTruthy()
+      expect(result.current.addressesState.isError).toBeFalsy()
     })
   })
   it('should be isError truthy if server error occurs getting address', async () => {
