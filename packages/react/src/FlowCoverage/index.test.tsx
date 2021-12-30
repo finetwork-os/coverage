@@ -231,4 +231,46 @@ describe('FlowCoverage', () => {
       expect(result.current.coverageState.data).toBeDefined()
     })
   })
+  it('should remove installation address and coverage state when step is equal to "location"', async () => {
+    const wrapper = ({ children }) => <Wrapper>{children}</Wrapper>
+    const { result } = renderHook(() => useFlowCoverage(), { wrapper })
+
+    act(() => {
+      result.current.setAddress({ ...MOCK_ADDRESS, userCheck: true })
+      result.current.coverage.addInstallationAddress(MOCK_ADDRESS)
+      result.current.setStep('coverage')
+    })
+    await waitFor(() => {
+      expect(result.current.coverageState.data).toBeDefined()
+      expect(result.current.coverage.installationAddress).toBeDefined()
+    })
+    act(() => {
+      result.current.setStep('location')
+    })
+    await waitFor(() => {
+      expect(result.current.coverageState.data).toBeUndefined()
+      expect(result.current.coverage.installationAddress).toBeNull()
+    })
+  })
+  it('should remove installation address and locations state when step is equal to "address"', async () => {
+    const wrapper = ({ children }) => <Wrapper>{children}</Wrapper>
+    const { result } = renderHook(() => useFlowCoverage(), { wrapper })
+
+    act(() => {
+      result.current.setAddress({ ...MOCK_ADDRESS, userCheck: true })
+      result.current.coverage.addInstallationAddress(MOCK_ADDRESS)
+      result.current.setStep('location')
+    })
+    await waitFor(() => {
+      expect(result.current.locationsState.data).toBeDefined()
+      expect(result.current.coverage.installationAddress).toBeDefined()
+    })
+    act(() => {
+      result.current.setStep('address')
+    })
+    await waitFor(() => {
+      expect(result.current.locationsState.data).toBeUndefined()
+      expect(result.current.coverage.installationAddress).toBeNull()
+    })
+  })
 })
