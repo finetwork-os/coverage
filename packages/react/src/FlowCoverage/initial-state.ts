@@ -15,4 +15,10 @@ export const initialState: FlowCoverageState = {
   setStep: () => {},
   setAddress: () => {},
   setInputAddress: () => {},
+  optionsAddressesState: {},
+  optionsLocationsState: {},
+  optionsCoverageState: {},
+  setOptionsAddressesState: () => {},
+  setOptionsLocationsState: () => {},
+  setOptionsCoverageState: () => {},
 }

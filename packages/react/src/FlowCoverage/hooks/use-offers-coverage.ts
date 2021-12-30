@@ -1,9 +1,12 @@
 import { useMemo } from 'react'
-import { useQuery, useQueryClient } from 'react-query'
+import { useQuery, useQueryClient, UseQueryOptions } from 'react-query'
 import { Coverage } from '@finetwork/coverage'
 import { FLOW_COVERAGE_KEY } from '../Provider'
 
-export const useOffersCoverage = (coverage: Coverage, cb?: () => void) => {
+export const useOffersCoverage = (
+  coverage: Coverage,
+  options: UseQueryOptions = {}
+) => {
   const queryClient = useQueryClient()
   const address = useMemo(() => {
     if (!coverage.installationAddress) return null
@@ -24,12 +27,14 @@ export const useOffersCoverage = (coverage: Coverage, cb?: () => void) => {
       if (offers) return offers
       offers = queryClient.getQueryData(['getOffers', queryKey[1]])
       if (offers) return offers
-      offers = await coverage.getOffersByParams(queryKey[1])
+      offers = await coverage.getOffersByParams(
+        queryKey[1] as Record<string, string>
+      )
       return offers
     },
     {
       enabled: !!coverage.installationAddress,
-      onSuccess: cb,
+      ...options,
     }
   )
   return state

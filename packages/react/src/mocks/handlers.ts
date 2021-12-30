@@ -89,4 +89,7 @@ export const handlers = [
       ])
     )
   }),
+  rest.get('/visibility', (req, res, ctx) => {
+    return res(ctx.json([{}]))
+  }),
 ]

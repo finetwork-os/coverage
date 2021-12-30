@@ -1,6 +1,7 @@
 import { Address } from '@finetwork/coverage'
 import { FlowCoverageState } from '../FlowCoverage'
 
+export const MOCK_STEP = 'location'
 export const MOCK_INPUT_ADDRESS = '0x123'
 export const MOCK_INPUT_ADDRESS_NOT_FOUND = 'not_found'
 export const MOCK_INPUT_ADDRESS_SERVER_ERROR = 'server_error'
@@ -20,4 +21,5 @@ export const MOCK_ADDRESS: Address = {
   cp: 'MOCK_CP',
   townId: 'MOCK_TOWN_ID',
   type: 'MOCK_TYPE',
+  homeId: 'MOCK-HOMEID',
 }

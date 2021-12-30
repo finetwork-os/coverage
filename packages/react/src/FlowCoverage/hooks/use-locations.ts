@@ -1,13 +1,13 @@
 import { Coverage, UserAddress } from '@finetwork/coverage'
 import { formatLocation } from '../../utils/format-address'
 import { isAddressCompleted } from '../../utils/is-address-completed'
-import { useQuery, useQueryClient } from 'react-query'
+import { useQuery, useQueryClient, UseQueryOptions } from 'react-query'
 import { FLOW_COVERAGE_KEY } from '../Provider'
 
 export const useLocations = (
   address: UserAddress | null,
   coverage: Coverage,
-  cb?: () => void
+  options: UseQueryOptions = {}
 ) => {
   const queryClient = useQueryClient()
   const queryState = useQuery(
@@ -25,8 +25,8 @@ export const useLocations = (
       return locations.map(formatLocation)
     },
     {
-      onSuccess: () => cb?.(),
       enabled: !!address && !!address?.userCheck,
+      ...options,
     }
   )
   return queryState

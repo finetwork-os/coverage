@@ -1,5 +1,5 @@
 import { Address, Coverage } from '@finetwork/coverage'
-import { useQuery, useQueryClient } from 'react-query'
+import { useQuery, useQueryClient, UseQueryOptions } from 'react-query'
 import { FLOW_COVERAGE_KEY } from '../Provider'
 
 const formatAddress = ({ label, ...address }: Address) => ({
@@ -11,13 +11,13 @@ const formatAddress = ({ label, ...address }: Address) => ({
 export const useAddresses = (
   value: string,
   coverage: Coverage,
-  cb?: () => void
+  options: UseQueryOptions = {}
 ) => {
   const queryClient = useQueryClient()
   const state = useQuery(
     ['getAddresses', value],
     async ({ queryKey }) => {
-      if (!queryKey[1] || queryKey[1].length === 0) return undefined
+      if (!queryKey[1] || (queryKey[1] as string).length === 0) return undefined
       const dataInLocalStorage = localStorage.getItem(FLOW_COVERAGE_KEY)
       let addresses =
         dataInLocalStorage &&
@@ -27,14 +27,14 @@ export const useAddresses = (
       if (addresses) return addresses
       addresses = await coverage.getNormalizedAddressesByInput(
         'address',
-        queryKey[1]
+        queryKey[1] as string
       )
       return addresses.map(formatAddress)
     },
     {
-      onSuccess: () => cb?.(),
       keepPreviousData: true,
       enabled: !!value,
+      ...options,
     }
   )
   return state

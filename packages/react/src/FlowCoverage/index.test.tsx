@@ -10,7 +10,8 @@ import {
   MOCK_INPUT_ADDRESS_LOCAL_STORAGE,
   MOCK_INPUT_ADDRESS_NOT_FOUND,
   MOCK_INPUT_ADDRESS_SERVER_ERROR,
-} from '../mocks/address'
+  MOCK_STEP,
+} from '../mocks/flow-coverage'
 
 describe('FlowCoverage', () => {
   beforeEach(() => {
@@ -62,6 +63,27 @@ describe('FlowCoverage', () => {
     await waitFor(() => {
       expect(result.current.addressesState.isLoading).toBeFalsy()
       expect(result.current.addressesState.data).toBeDefined()
+    })
+  })
+  it('should pass options to input address', async () => {
+    const wrapper = ({ children }) => <Wrapper>{children}</Wrapper>
+    const { result } = renderHook(() => useFlowCoverage(), { wrapper })
+    let mock = ''
+    result.current.setOptionsAddressesState({
+      onSuccess: () => (mock = 'success'),
+      onError: () => (mock = 'error'),
+    })
+    act(() => {
+      result.current.setInputAddress(MOCK_INPUT_ADDRESS_NOT_FOUND)
+    })
+    await waitFor(() => {
+      expect(mock).toBe('error')
+    })
+    act(() => {
+      result.current.setInputAddress(MOCK_INPUT_ADDRESS)
+    })
+    await waitFor(() => {
+      expect(mock).toBe('success')
     })
   })
   it('should be isError truthy if input address is not found', async () => {
@@ -121,6 +143,20 @@ describe('FlowCoverage', () => {
       expect(result.current.locationsState.data).toBeDefined()
     })
   })
+  it('should activate coverage state flow when installation address is added', async () => {
+    const wrapper = ({ children }) => <Wrapper>{children}</Wrapper>
+    const { result } = renderHook(() => useFlowCoverage(), { wrapper })
+
+    act(() => {
+      result.current.setAddress({ ...MOCK_ADDRESS, userCheck: true })
+      result.current.coverage.addInstallationAddress(MOCK_ADDRESS)
+    })
+    expect(result.current.coverageState.isLoading).toBeTruthy()
+    await waitFor(() => {
+      expect(result.current.coverageState.isLoading).toBeFalsy()
+      expect(result.current.coverageState.data).toBeDefined()
+    })
+  })
   it('should set state in localStorage on init', () => {
     const wrapper = ({ children }) => <Wrapper>{children}</Wrapper>
     renderHook(() => useFlowCoverage(), { wrapper })
@@ -139,5 +175,60 @@ describe('FlowCoverage', () => {
       localStorage.getItem(FLOW_COVERAGE_KEY)
     )
     expect(stateInLocalStorage).toStrictEqual(state)
+  })
+  it('should set step', () => {
+    const wrapper = ({ children }) => <Wrapper>{children}</Wrapper>
+    const { result } = renderHook(() => useFlowCoverage(), { wrapper })
+
+    act(() => {
+      result.current.setStep(MOCK_STEP)
+    })
+    expect(result.current.step).toBe(MOCK_STEP)
+  })
+  it('should set location step if address is setted and completed', () => {
+    const wrapper = ({ children }) => <Wrapper>{children}</Wrapper>
+    const { result } = renderHook(() => useFlowCoverage(), { wrapper })
+    expect(result.current.step).toBe('address')
+    act(() => {
+      result.current.setAddress({ ...MOCK_ADDRESS, userCheck: true })
+    })
+    expect(result.current.step).toBe('location')
+  })
+  it('should set options in addresses/locations/coverage states', () => {
+    const wrapper = ({ children }) => <Wrapper>{children}</Wrapper>
+    const { result } = renderHook(() => useFlowCoverage(), { wrapper })
+
+    expect(result.current.optionsAddressesState).toBeUndefined()
+    expect(result.current.optionsLocationsState).toBeUndefined()
+    expect(result.current.optionsCoverageState).toBeUndefined()
+    act(() => {
+      result.current.setOptionsAddressesState({
+        onSuccess: () => {},
+      })
+      result.current.setOptionsLocationsState({
+        onSuccess: () => {},
+      })
+      result.current.setOptionsCoverageState({
+        onSuccess: () => {},
+      })
+    })
+    expect(result.current.optionsAddressesState).toBeDefined()
+    expect(result.current.optionsLocationsState).toBeDefined()
+    expect(result.current.optionsCoverageState).toBeDefined()
+  })
+  it('should keep flow coverage successful', async () => {
+    const wrapper = ({ children }) => <Wrapper>{children}</Wrapper>
+    const { result } = renderHook(() => useFlowCoverage(), { wrapper })
+
+    act(() => {
+      result.current.setInputAddress(MOCK_INPUT_ADDRESS)
+      result.current.setAddress({ ...MOCK_ADDRESS, userCheck: true })
+      result.current.coverage.addInstallationAddress(MOCK_ADDRESS)
+    })
+    await waitFor(() => {
+      expect(result.current.addressesState.data).toBeDefined()
+      expect(result.current.locationsState.data).toBeDefined()
+      expect(result.current.coverageState.data).toBeDefined()
+    })
   })
 })

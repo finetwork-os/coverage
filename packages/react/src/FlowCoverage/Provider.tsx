@@ -1,11 +1,13 @@
 import { Coverage, UserAddress } from '@finetwork/coverage'
 import { isServer } from '@finetwork/coverage/src/utils'
-import React, { FC, useCallback, useEffect, useReducer } from 'react'
+import React, { FC, useCallback, useEffect, useReducer, useState } from 'react'
 import { FlowCoverageState, Step } from '.'
 import { FlowCoverageContext } from './Context'
 import { flowCoverageReducer } from './reducer'
 import { useAddresses, useLocations, useOffersCoverage } from './hooks'
 import { initialState } from './initial-state'
+import { UseQueryOptions } from 'react-query'
+import { isAddressCompleted } from '../utils/is-address-completed'
 
 export const FLOW_COVERAGE_KEY = 'fi_flow_coverage'
 
@@ -16,6 +18,12 @@ export const FlowCoverageProvider: FC<ProviderProps> = ({
   children,
   coverage,
 }) => {
+  const [optionsAddressesState, setOptionsAddressesState] =
+    useState<UseQueryOptions>()
+  const [optionsLocationsState, setOptionsLocationsState] =
+    useState<UseQueryOptions>()
+  const [optionsCoverageState, setOptionsCoverageState] =
+    useState<UseQueryOptions>()
   const [state, dispatch] = useReducer(
     flowCoverageReducer,
     initialState,
@@ -29,15 +37,18 @@ export const FlowCoverageProvider: FC<ProviderProps> = ({
 
   const addressesState = useAddresses(
     state.inputAddress,
-    coverage
+    coverage,
+    optionsAddressesState
   ) as FlowCoverageState['addressesState']
-  const locationsState = useLocations(state.selectedAddress, coverage, () => {
-    if (coverage.installationAddress) return
-    setStep('location')
-  }) as FlowCoverageState['locationsState']
-  const coverageState = useOffersCoverage(coverage, () => {
-    setStep('coverage')
-  }) as FlowCoverageState['coverageState']
+  const locationsState = useLocations(
+    state.selectedAddress,
+    coverage,
+    optionsLocationsState
+  ) as FlowCoverageState['locationsState']
+  const coverageState = useOffersCoverage(
+    coverage,
+    optionsCoverageState
+  ) as FlowCoverageState['coverageState']
 
   const setStep = useCallback(
     (step: Step): void => {
@@ -57,19 +68,31 @@ export const FlowCoverageProvider: FC<ProviderProps> = ({
     [locationsState, coverage, coverageState]
   )
 
-  const setAddress = (address: UserAddress): void =>
+  const setAddress = (address: UserAddress): void => {
     dispatch({
       payload: address,
       type: 'SET_ADDRESS',
     })
-  const setInputAddress = (input: string): void =>
+    if (address.userCheck && isAddressCompleted(address)) {
+      setStep('location')
+    }
+  }
+
+  const setInputAddress = (input: string): void => {
     dispatch({
       payload: input,
       type: 'SET_INPUT_ADDRESS',
     })
+  }
 
   useEffect(() => {
-    const { coverage, ...rest } = state
+    const {
+      coverage,
+      optionsAddressesState,
+      optionsCoverageState,
+      optionsLocationsState,
+      ...rest
+    } = state
     localStorage.setItem(
       FLOW_COVERAGE_KEY,
       JSON.stringify({
@@ -92,6 +115,12 @@ export const FlowCoverageProvider: FC<ProviderProps> = ({
         locationsState,
         coverageState,
         coverage,
+        setOptionsAddressesState,
+        setOptionsLocationsState,
+        setOptionsCoverageState,
+        optionsAddressesState,
+        optionsLocationsState,
+        optionsCoverageState,
       }}
     >
       {children}

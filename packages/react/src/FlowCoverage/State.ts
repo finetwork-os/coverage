@@ -1,5 +1,5 @@
 import { Address, Coverage, UserAddress } from '@finetwork/coverage'
-import { UseQueryResult } from 'react-query'
+import { UseQueryOptions, UseQueryResult } from 'react-query'
 
 export type Step = 'address' | 'location' | 'coverage'
 export type FlowCoverageState = {
@@ -13,4 +13,10 @@ export type FlowCoverageState = {
   setStep: (step: Step) => void
   setAddress: (address: UserAddress) => void
   setInputAddress: (input: string) => void
+  optionsAddressesState: UseQueryOptions
+  optionsLocationsState: UseQueryOptions
+  optionsCoverageState: UseQueryOptions
+  setOptionsAddressesState: (options: UseQueryOptions) => void
+  setOptionsLocationsState: (options: UseQueryOptions) => void
+  setOptionsCoverageState: (options: UseQueryOptions) => void
 }
