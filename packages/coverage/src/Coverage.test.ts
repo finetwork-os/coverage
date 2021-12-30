@@ -30,6 +30,12 @@ describe('Coverage class', () => {
     })
     expect(coverage.installationAddress.label).toEqual(label)
   })
+  it('should remove installation address', () => {
+    coverage.addInstallationAddress(testInstallationAddress)
+    expect(coverage.installationAddress).toEqual(testInstallationAddress)
+    coverage.removeInstallationAddress()
+    expect(coverage.installationAddress).toBeNull()
+  })
   it('should update history address when installation address is added', () => {
     coverage.addInstallationAddress(testInstallationAddress)
     expect(coverage.addressHistory).toHaveLength(1)

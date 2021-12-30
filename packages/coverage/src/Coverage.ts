@@ -1,5 +1,5 @@
-import { Address, Offer } from './types'
-import { getCoverageProxy, isServer } from './utils'
+import { Address } from './types'
+import { getCoverageProxy, isServer, isValidHttpStatusCode } from './utils'
 import mitt, { MittEmitter } from './mitt'
 
 export const coverageEvents = [
@@ -111,6 +111,7 @@ export class Coverage {
 
   addInstallationAddress(address: Address) {
     this.installationAddress = address
+    this.addAddressToHistory(address)
   }
 
   updateInstallationAddress(address: Partial<Address>) {
@@ -142,14 +143,19 @@ export class Coverage {
       throw new Error('Server side not allowed. Use SDK in client environment.')
     }
     try {
-      const addressNormalized: Address[] = await (
-        await fetch(`${this._urls.normalizer}?${queryKey}=${address}`, {
+      const response = await fetch(
+        `${this._urls.normalizer}?${queryKey}=${address}`,
+        {
           method: 'GET',
-        })
-      ).json()
-      return addressNormalized
+        }
+      )
+      if (response.ok && isValidHttpStatusCode(response.status)) {
+        return (await response.json()) as Address[]
+      }
+      const error = await response.json()
+      throw new Error(error.message)
     } catch (error) {
-      throw new Error(`Error getting address. Error: ${error}`)
+      throw new Error(`Error getting address. ${error}`)
     }
   }
 
@@ -158,22 +164,24 @@ export class Coverage {
       throw new Error('Server side not allowed. Use SDK in client environment.')
     }
     try {
-      const locations: any[] = await (
-        await fetch(`${this._urls.locator}`, {
-          method: 'POST',
-          body: JSON.stringify(address),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-      ).json()
-      return locations
+      const response = await fetch(`${this._urls.locator}`, {
+        method: 'POST',
+        body: JSON.stringify(address),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      if (response.ok && isValidHttpStatusCode(response.status)) {
+        return (await response.json()) as unknown[]
+      }
+      const error = await response.json()
+      throw new Error(error.message)
     } catch (error) {
-      throw new Error(`Error getting locations. Error: ${error}`)
+      throw new Error(`Error getting locations. ${error}`)
     }
   }
 
-  async getOffersByParams(params: Record<string, string>): Promise<Offer[]> {
+  async getOffersByParams(params: Record<string, string>): Promise<unknown[]> {
     if (isServer()) {
       throw new Error('Server side not allowed. Use SDK in client environment.')
     }
@@ -183,17 +191,17 @@ export class Coverage {
         prev = `${prev}${index > 0 ? '&' : ''}${next[0]}=${next[1]}`
         return prev
       }, '')
-      const offers: Offer[] = await (
-        await fetch(`${this._urls.visibility}?${paramsString}`, {
-          method: 'GET',
-        })
-      ).json()
-      return offers
+      const response = await fetch(`${this._urls.visibility}?${paramsString}`, {
+        method: 'GET',
+      })
+      if (response.ok && isValidHttpStatusCode(response.status)) {
+        return (await response.json()) as unknown[]
+      }
+      const error = await response.json()
+      throw new Error(error.message)
     } catch (error) {
       throw new Error(
-        `Error getting offers for location ${JSON.stringify(
-          params
-        )}. Error: ${error}`
+        `Error getting offers for location ${JSON.stringify(params)}. ${error}`
       )
     }
   }

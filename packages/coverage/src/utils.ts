@@ -1,7 +1,7 @@
-import { Address, Offer } from './types'
+import { Address } from './types'
 
 export const cloneMap = (map: Map<string, any>) => new Map(map)
-export const offersArrToMap = (arr: Offer[]) =>
+export const offersArrToMap = (arr: any[]) =>
   new Map(arr.map((i) => [i.uniqueId, i]))
 export const isServer = () => typeof window === 'undefined'
 
@@ -56,4 +56,8 @@ export const getCoverageProxy = (
       return true
     },
   })
+}
+
+export const isValidHttpStatusCode = (statusCode: number) => {
+  return statusCode >= 200 && statusCode < 300
 }
