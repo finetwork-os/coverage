@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { FlowCoverageProvider } from '../FlowCoverage'
 
 const mockCoverage = new Coverage({
-  storage: typeof window !== 'undefined' ? localStorage : null,
+  storage: localStorage,
   urls: {
     normalizer: '/normalize',
     locator: '/locator',

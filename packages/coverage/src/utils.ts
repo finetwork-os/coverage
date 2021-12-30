@@ -57,3 +57,7 @@ export const getCoverageProxy = (
     },
   })
 }
+
+export const isValidHttpStatusCode = (statusCode: number) => {
+  return statusCode >= 200 && statusCode < 300
+}

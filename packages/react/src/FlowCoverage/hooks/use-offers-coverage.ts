@@ -25,7 +25,6 @@ export const useOffersCoverage = (coverage: Coverage, cb?: () => void) => {
       offers = queryClient.getQueryData(['getOffers', queryKey[1]])
       if (offers) return offers
       offers = await coverage.getOffersByParams(queryKey[1])
-      if (!offers) return []
       return offers
     },
     {

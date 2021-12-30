@@ -69,10 +69,11 @@ export const FlowCoverageProvider: FC<ProviderProps> = ({
     })
 
   useEffect(() => {
+    const { coverage, ...rest } = state
     localStorage.setItem(
       FLOW_COVERAGE_KEY,
       JSON.stringify({
-        ...state,
+        ...rest,
         addressesState,
         locationsState,
         coverageState,
