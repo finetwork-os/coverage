@@ -1,6 +1,6 @@
 import type { FlowCoverageState, Step } from './State'
 import type { ActionMap } from '../utils/ActionMap'
-import type { UserAddress } from '@finetwork/coverage'
+import type { Location, UserAddress } from '@finetwork/coverage'
 
 export type Payload = {
   SET_STEP: Step

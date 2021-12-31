@@ -1,4 +1,4 @@
-import { Address, Coverage, UserAddress } from '@finetwork/coverage'
+import { Address, Coverage, Location, UserAddress } from '@finetwork/coverage'
 import { UseQueryOptions, UseQueryResult } from 'react-query'
 
 export type Step = 'address' | 'location' | 'coverage'
