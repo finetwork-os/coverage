@@ -1,5 +1,4 @@
-import { Coverage, UserAddress } from '@finetwork/coverage'
-import { isServer } from '@finetwork/coverage/src/utils'
+import { Coverage, UserAddress, isServer } from '@finetwork/coverage'
 import React, { FC, useCallback, useEffect, useReducer, useState } from 'react'
 import { FlowCoverageState, Step } from '.'
 import { FlowCoverageContext } from './Context'
