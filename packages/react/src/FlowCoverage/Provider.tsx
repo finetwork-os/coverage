@@ -72,9 +72,6 @@ export const FlowCoverageProvider: FC<ProviderProps> = ({
       payload: address,
       type: 'SET_ADDRESS',
     })
-    if (address.userCheck && isAddressCompleted(address)) {
-      setStep('location')
-    }
   }
 
   const setInputAddress = (input: string): void => {

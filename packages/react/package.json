@@ -1,6 +1,6 @@
 {
   "name": "@finetwork/coverage-react",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "source": "src/index.ts",
   "typings": "src/index.ts",
   "main": "src/index.ts",

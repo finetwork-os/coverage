@@ -185,15 +185,6 @@ describe('FlowCoverage', () => {
     })
     expect(result.current.step).toBe(MOCK_STEP)
   })
-  it('should set location step if address is setted and completed', () => {
-    const wrapper = ({ children }) => <Wrapper>{children}</Wrapper>
-    const { result } = renderHook(() => useFlowCoverage(), { wrapper })
-    expect(result.current.step).toBe('address')
-    act(() => {
-      result.current.setAddress({ ...MOCK_ADDRESS, userCheck: true })
-    })
-    expect(result.current.step).toBe('location')
-  })
   it('should set options in addresses/locations/coverage states', () => {
     const wrapper = ({ children }) => <Wrapper>{children}</Wrapper>
     const { result } = renderHook(() => useFlowCoverage(), { wrapper })
