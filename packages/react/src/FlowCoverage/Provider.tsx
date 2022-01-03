@@ -6,7 +6,8 @@ import { flowCoverageReducer } from './reducer'
 import { useAddresses, useLocations, useOffersCoverage } from './hooks'
 import { initialState } from './initial-state'
 import { UseQueryOptions } from 'react-query'
-import { isAddressCompleted } from '../utils/is-address-completed'
+import { CoverageProvider } from '../Coverage'
+import { useSubscribeCoverage } from '../utils/use-subscribe-coverage'
 
 export const FLOW_COVERAGE_KEY = 'fi_flow_coverage'
 
@@ -17,6 +18,7 @@ export const FlowCoverageProvider: FC<ProviderProps> = ({
   children,
   coverage,
 }) => {
+  const { installationAddress } = useSubscribeCoverage(coverage)
   const [optionsAddressesState, setOptionsAddressesState] =
     useState<UseQueryOptions>()
   const [optionsLocationsState, setOptionsLocationsState] =
@@ -46,6 +48,7 @@ export const FlowCoverageProvider: FC<ProviderProps> = ({
   ) as FlowCoverageState['locationsState']
   const coverageState = useOffersCoverage(
     coverage,
+    installationAddress,
     optionsCoverageState
   ) as FlowCoverageState['coverageState']
 
@@ -81,6 +84,12 @@ export const FlowCoverageProvider: FC<ProviderProps> = ({
     })
   }
 
+  const clearAddress = useCallback(() => {
+    setInputAddress('')
+    setAddress(null)
+    addressesState.remove()
+  }, [])
+
   useEffect(() => {
     const {
       coverage,
@@ -101,25 +110,28 @@ export const FlowCoverageProvider: FC<ProviderProps> = ({
   }, [state, addressesState, coverageState, locationsState])
 
   return (
-    <FlowCoverageContext.Provider
-      value={{
-        ...state,
-        setStep,
-        setAddress,
-        setInputAddress,
-        addressesState,
-        locationsState,
-        coverageState,
-        coverage,
-        setOptionsAddressesState,
-        setOptionsLocationsState,
-        setOptionsCoverageState,
-        optionsAddressesState,
-        optionsLocationsState,
-        optionsCoverageState,
-      }}
-    >
-      {children}
-    </FlowCoverageContext.Provider>
+    <CoverageProvider coverage={coverage}>
+      <FlowCoverageContext.Provider
+        value={{
+          ...state,
+          setStep,
+          setAddress,
+          setInputAddress,
+          addressesState,
+          locationsState,
+          coverageState,
+          coverage,
+          setOptionsAddressesState,
+          setOptionsLocationsState,
+          setOptionsCoverageState,
+          optionsAddressesState,
+          optionsLocationsState,
+          optionsCoverageState,
+          clearAddress,
+        }}
+      >
+        {children}
+      </FlowCoverageContext.Provider>
+    </CoverageProvider>
   )
 }

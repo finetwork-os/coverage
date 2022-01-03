@@ -19,4 +19,5 @@ export type FlowCoverageState = {
   setOptionsAddressesState: (options: UseQueryOptions) => void
   setOptionsLocationsState: (options: UseQueryOptions) => void
   setOptionsCoverageState: (options: UseQueryOptions) => void
+  clearAddress: () => void
 }

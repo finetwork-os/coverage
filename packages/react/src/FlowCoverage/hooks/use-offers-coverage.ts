@@ -5,18 +5,19 @@ import { FLOW_COVERAGE_KEY } from '../Provider'
 
 export const useOffersCoverage = (
   coverage: Coverage,
+  installationAddress: Coverage['installationAddress'],
   options: UseQueryOptions = {}
 ) => {
   const queryClient = useQueryClient()
   const address = useMemo(() => {
-    if (!coverage.installationAddress) return null
+    if (!installationAddress) return null
     return {
-      streetSegmentId: coverage.installationAddress?.streetId,
-      addressId: coverage.installationAddress?.homeId,
-      cp: coverage.installationAddress?.cp,
+      streetSegmentId: installationAddress?.streetId,
+      addressId: installationAddress?.homeId,
+      cp: installationAddress?.cp,
       shopId: 99,
     } as any
-  }, [coverage.installationAddress])
+  }, [installationAddress])
   const state = useQuery(
     ['getOffers', address],
     async ({ queryKey }) => {
@@ -33,7 +34,7 @@ export const useOffersCoverage = (
       return offers
     },
     {
-      enabled: !!coverage.installationAddress,
+      enabled: !!installationAddress,
       ...options,
     }
   )

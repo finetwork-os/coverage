@@ -21,4 +21,5 @@ export const initialState: FlowCoverageState = {
   setOptionsAddressesState: () => {},
   setOptionsLocationsState: () => {},
   setOptionsCoverageState: () => {},
+  clearAddress: () => {},
 }

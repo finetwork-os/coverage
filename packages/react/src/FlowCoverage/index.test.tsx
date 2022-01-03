@@ -69,11 +69,11 @@ describe('FlowCoverage', () => {
     const wrapper = ({ children }) => <Wrapper>{children}</Wrapper>
     const { result } = renderHook(() => useFlowCoverage(), { wrapper })
     let mock = ''
-    result.current.setOptionsAddressesState({
-      onSuccess: () => (mock = 'success'),
-      onError: () => (mock = 'error'),
-    })
     act(() => {
+      result.current.setOptionsAddressesState({
+        onSuccess: () => (mock = 'success'),
+        onError: () => (mock = 'error'),
+      })
       result.current.setInputAddress(MOCK_INPUT_ADDRESS_NOT_FOUND)
     })
     await waitFor(() => {
@@ -148,7 +148,6 @@ describe('FlowCoverage', () => {
     const { result } = renderHook(() => useFlowCoverage(), { wrapper })
 
     act(() => {
-      result.current.setAddress({ ...MOCK_ADDRESS, userCheck: true })
       result.current.coverage.addInstallationAddress(MOCK_ADDRESS)
     })
     expect(result.current.coverageState.isLoading).toBeTruthy()
@@ -262,6 +261,26 @@ describe('FlowCoverage', () => {
     await waitFor(() => {
       expect(result.current.locationsState.data).toBeUndefined()
       expect(result.current.coverage.installationAddress).toBeNull()
+    })
+  })
+  it('should reset addresses state, input address and selected address on clearAddress', async () => {
+    const wrapper = ({ children }) => <Wrapper>{children}</Wrapper>
+    const { result } = renderHook(() => useFlowCoverage(), { wrapper })
+
+    act(() => {
+      result.current.setInputAddress(MOCK_INPUT_ADDRESS)
+      result.current.setAddress({ ...MOCK_ADDRESS, userCheck: true })
+    })
+    await waitFor(() => {
+      expect(result.current.addressesState.data).toBeDefined()
+    })
+    act(() => {
+      result.current.clearAddress()
+    })
+    await waitFor(() => {
+      expect(result.current.addressesState.data).toBeUndefined()
+      expect(result.current.inputAddress).toBe('')
+      expect(result.current.selectedAddress).toBeNull()
     })
   })
 })

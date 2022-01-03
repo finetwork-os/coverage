@@ -32,7 +32,7 @@ export const useAddresses = (
       return addresses.map(formatAddress)
     },
     {
-      keepPreviousData: true,
+      keepPreviousData: !!value,
       enabled: !!value,
       ...options,
     }
